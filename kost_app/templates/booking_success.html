@@ -1,0 +1,106 @@
+{% extends 'base.html' %}
+
+{% block title %}Booking Berhasil{% endblock %}
+
+{% block content %}
+<div class="container my-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="card shadow-lg border-success">
+                <div class="card-header bg-success text-white text-center py-4">
+                    <i class="fas fa-check-circle" style="font-size: 3rem;"></i>
+                    <h2 class="mt-3 mb-0">Booking Berhasil!</h2>
+                </div>
+                
+                <div class="card-body p-5">
+                    <div class="alert alert-info" role="alert">
+                        <i class="fas fa-info-circle"></i>
+                        <strong>Terima kasih telah melakukan booking!</strong> Tim kami akan segera menghubungi Anda untuk mengkonfirmasi reservasi.
+                    </div>
+                    
+                    <h5 class="mb-4 text-primary">Detail Booking Anda:</h5>
+                    
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <p><strong>Nama Kost:</strong></p>
+                            <p class="text-muted">{{ booking.kost.nama }}</p>
+                        </div>
+                        <div class="col-md-6">
+                            <p><strong>Nomor Booking:</strong></p>
+                            <p class="text-muted">#{{ booking.id }}</p>
+                        </div>
+                    </div>
+                    
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <p><strong>Nama Penyewa:</strong></p>
+                            <p class="text-muted">{{ booking.nama_penyewa }}</p>
+                        </div>
+                        <div class="col-md-6">
+                            <p><strong>Email:</strong></p>
+                            <p class="text-muted">{{ booking.email }}</p>
+                        </div>
+                    </div>
+                    
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <p><strong>Nomor Telepon:</strong></p>
+                            <p class="text-muted">{{ booking.telepon }}</p>
+                        </div>
+                        <div class="col-md-6">
+                            <p><strong>Status:</strong></p>
+                            <p class="text-muted">
+                                <span class="badge bg-warning">{{ booking.get_status_display }}</span>
+                            </p>
+                        </div>
+                    </div>
+                    
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <p><strong>Tanggal Mulai:</strong></p>
+                            <p class="text-muted">{{ booking.tanggal_mulai|date:"d M Y" }}</p>
+                        </div>
+                        <div class="col-md-6">
+                            <p><strong>Durasi:</strong></p>
+                            <p class="text-muted">{{ booking.durasi_bulan }} bulan</p>
+                        </div>
+                    </div>
+                    
+                    <div class="row mb-4">
+                        <div class="col-md-6">
+                            <p><strong>Harga/Bulan:</strong></p>
+                            <p class="text-muted">Rp {{ booking.kost.harga|floatformat:0 }}</p>
+                        </div>
+                        <div class="col-md-6">
+                            <p><strong>Total Harga:</strong></p>
+                            <p class="text-muted"><strong>Rp {{ total_harga|floatformat:0 }}</strong></p>
+                        </div>
+                    </div>
+                    
+                    {% if booking.catatan %}
+                    <div class="mb-4">
+                        <p><strong>Catatan:</strong></p>
+                        <p class="text-muted">{{ booking.catatan }}</p>
+                    </div>
+                    {% endif %}
+                    
+                    <hr>
+                    
+                    <div class="alert alert-light border">
+                        <h6 class="mb-3"><i class="fas fa-phone"></i> <strong>Hubungi Kami:</strong></h6>
+                        <p class="mb-1"><i class="fas fa-phone-alt"></i> 0812-3456-7890</p>
+                        <p class="mb-1"><i class="fas fa-envelope"></i> info@kostku.com</p>
+                        <p class="mb-0"><i class="fab fa-whatsapp"></i> <a href="https://wa.me/6281234567890?text=Halo%20saya%20ingin%20mengkonfirmasi%20booking%20saya" target="_blank">Chat WhatsApp</a></p>
+                    </div>
+                    
+                    <div class="d-grid gap-2 mt-4">
+                        <a href="{% url 'home' %}" class="btn btn-primary btn-lg">
+                            <i class="fas fa-home"></i> Kembali ke Beranda
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

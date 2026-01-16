@@ -1,0 +1,73 @@
+{% extends 'base.html' %}
+
+{% block title %}Booking {{ kost.nama }}{% endblock %}
+
+{% block content %}
+<div class="container my-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="card shadow">
+                <div class="card-header bg-primary text-white">
+                    <h3 class="mb-0"><i class="fas fa-calendar-check"></i> Form Booking Kost</h3>
+                </div>
+                <div class="card-body">
+                    <div class="alert alert-info">
+                        <strong>{{ kost.nama }}</strong><br>
+                        <i class="fas fa-map-marker-alt"></i> {{ kost.alamat }}<br>
+                        <strong class="text-primary">Rp {{ kost.harga|floatformat:0 }}/bulan</strong>
+                    </div>
+                    
+                    <form method="post" class="needs-validation" novalidate>
+                        {% csrf_token %}
+                        
+                        <div class="mb-3">
+                            <label class="form-label">Nama Lengkap *</label>
+                            {{ form.nama_penyewa }}
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label class="form-label">Email *</label>
+                            {{ form.email }}
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label class="form-label">Nomor Telepon *</label>
+                            {{ form.telepon }}
+                        </div>
+                        
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Tanggal Mulai *</label>
+                                {{ form.tanggal_mulai }}
+                            </div>
+                            
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Durasi (bulan) *</label>
+                                {{ form.durasi_bulan }}
+                            </div>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label class="form-label">Foto KTP *</label>
+                            {{ form.ktp }}
+                            <small class="form-text text-muted">Upload foto KTP atau kartu identitas Anda</small>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label class="form-label">Catatan</label>
+                            {{ form.catatan }}
+                        </div>
+                        
+                        <div class="d-grid gap-2">
+                            <button type="submit" class="btn btn-primary btn-lg">
+                                <i class="fas fa-paper-plane"></i> Kirim Booking
+                            </button>
+                            <a href="{% url 'kost_detail' kost.pk %}" class="btn btn-outline-secondary">Batal</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

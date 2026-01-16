@@ -1,0 +1,60 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="hero-section">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-6">
+                <h1 class="display-4 fw-bold text-white animate-fade-in">Temukan Kost Impian Anda</h1>
+                <p class="lead text-white">Cari kost nyaman dengan harga terjangkau di lokasi strategis</p>
+                <a href="#kost-list" class="btn btn-light btn-lg">Lihat Semua Kost</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container my-5" id="kost-list">
+    <div class="row mb-4">
+        <div class="col-12">
+            <h2 class="text-center mb-4">Daftar Kost Tersedia</h2>
+            <div class="filter-buttons text-center">
+                <a href="{% url 'home' %}" class="btn {% if not jenis_filter %}btn-primary{% else %}btn-outline-primary{% endif %} mx-1">Semua</a>
+                <a href="{% url 'home' %}?jenis=putra" class="btn {% if jenis_filter == 'putra' %}btn-primary{% else %}btn-outline-primary{% endif %} mx-1">Putra</a>
+                <a href="{% url 'home' %}?jenis=putri" class="btn {% if jenis_filter == 'putri' %}btn-primary{% else %}btn-outline-primary{% endif %} mx-1">Putri</a>
+                <a href="{% url 'home' %}?jenis=campur" class="btn {% if jenis_filter == 'campur' %}btn-primary{% else %}btn-outline-primary{% endif %} mx-1">Campur</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        {% for kost in kost_list %}
+        <div class="col-md-6 col-lg-4 mb-4">
+            <div class="card kost-card h-100 shadow-sm">
+                {% if kost.gambar %}
+                <img src="{{ kost.gambar.url }}" class="card-img-top" alt="{{ kost.nama }}">
+                {% else %}
+                <div class="card-img-top bg-secondary d-flex align-items-center justify-content-center" style="height: 200px;">
+                    <i class="fas fa-home fa-4x text-white"></i>
+                </div>
+                {% endif %}
+                <div class="card-body">
+                    <span class="badge bg-info mb-2">{{ kost.get_jenis_display }}</span>
+                    <h5 class="card-title">{{ kost.nama }}</h5>
+                    <p class="card-text text-muted"><i class="fas fa-map-marker-alt"></i> {{ kost.alamat|truncatewords:10 }}</p>
+                    <h4 class="text-primary">Rp {{ kost.harga|floatformat:0 }}<small class="text-muted">/bulan</small></h4>
+                    <p class="card-text"><small><i class="fas fa-door-open"></i> {{ kost.jumlah_kamar }} kamar tersedia</small></p>
+                </div>
+                <div class="card-footer bg-transparent">
+                    <a href="{% url 'kost_detail' kost.pk %}" class="btn btn-primary w-100">Lihat Detail</a>
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <div class="col-12 text-center">
+            <p class="lead">Belum ada kost tersedia.</p>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

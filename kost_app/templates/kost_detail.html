@@ -1,0 +1,222 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ kost.nama }} - Sewa Kost{% endblock %}
+
+{% block content %}
+<div class="container my-5">
+    <!-- Breadcrumb -->
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{% url 'home' %}">Beranda</a></li>
+            <li class="breadcrumb-item active">{{ kost.nama }}</li>
+        </ol>
+    </nav>
+    
+    <div class="row">
+        <div class="col-lg-8">
+            <!-- Gambar Utama -->
+            <div class="card shadow-sm mb-4">
+                {% if kost.gambar %}
+                <img src="{{ kost.gambar.url }}" class="card-img-top" alt="{{ kost.nama }}" style="max-height: 500px; object-fit: cover;">
+                {% else %}
+                <div class="card-img-top bg-secondary d-flex align-items-center justify-content-center" style="height: 400px;">
+                    <i class="fas fa-home fa-5x text-white"></i>
+                </div>
+                {% endif %}
+            </div>
+            
+            <!-- Informasi Detail -->
+            <div class="card shadow-sm mb-4">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-start mb-3">
+                        <div>
+                            <span class="badge bg-info mb-2">{{ kost.get_jenis_display }}</span>
+                            <h2 class="card-title mb-0">{{ kost.nama }}</h2>
+                        </div>
+                        {% if kost.tersedia %}
+                        <span class="badge bg-success fs-6">Tersedia</span>
+                        {% else %}
+                        <span class="badge bg-danger fs-6">Penuh</span>
+                        {% endif %}
+                    </div>
+                    
+                    <p class="text-muted mb-4">
+                        <i class="fas fa-map-marker-alt"></i> {{ kost.alamat }}
+                    </p>
+                    
+                    <!-- Quick Info -->
+                    <div class="row mb-4">
+                        <div class="col-md-4 mb-3">
+                            <div class="info-box p-3 bg-light rounded text-center">
+                                <i class="fas fa-door-open fa-2x text-primary mb-2"></i>
+                                <h5>{{ kost.jumlah_kamar }}</h5>
+                                <small class="text-muted">Kamar Tersedia</small>
+                            </div>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <div class="info-box p-3 bg-light rounded text-center">
+                                <i class="fas fa-venus-mars fa-2x text-primary mb-2"></i>
+                                <h5>{{ kost.get_jenis_display }}</h5>
+                                <small class="text-muted">Jenis Kost</small>
+                            </div>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <div class="info-box p-3 bg-light rounded text-center">
+                                <i class="fas fa-money-bill-wave fa-2x text-primary mb-2"></i>
+                                <h5>Rp {{ kost.harga|floatformat:0 }}</h5>
+                                <small class="text-muted">Per Bulan</small>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <hr>
+                    
+                    <!-- Deskripsi -->
+                    <div class="mb-4">
+                        <h4><i class="fas fa-info-circle text-primary"></i> Deskripsi</h4>
+                        <p class="text-justify">{{ kost.deskripsi }}</p>
+                    </div>
+                    
+                    <hr>
+                    
+                    <!-- Fasilitas -->
+                    <div class="mb-4">
+                        <h4><i class="fas fa-check-circle text-primary"></i> Fasilitas</h4>
+                        <div class="row mt-3">
+                            {% for fasilitas in kost.fasilitas.splitlines %}
+                            <div class="col-md-6 mb-2">
+                                <div class="d-flex align-items-center">
+                                    <i class="fas fa-check-circle text-success me-2"></i>
+                                    <span>{{ fasilitas }}</span>
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    
+                    <hr>
+                    
+                    <!-- Peraturan & Info Tambahan -->
+                    <div class="mb-4">
+                        <h4><i class="fas fa-clipboard-list text-primary"></i> Informasi Tambahan</h4>
+                        <ul class="list-unstyled mt-3">
+                            <li class="mb-2"><i class="fas fa-clock text-muted me-2"></i> Jam kunjungan: 24 jam</li>
+                            <li class="mb-2"><i class="fas fa-id-card text-muted me-2"></i> Wajib KTP untuk pendaftaran</li>
+                            <li class="mb-2"><i class="fas fa-calendar-alt text-muted me-2"></i> Pembayaran setiap tanggal 1</li>
+                            <li class="mb-2"><i class="fas fa-handshake text-muted me-2"></i> Deposit 1 bulan</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Lokasi -->
+            <div class="card shadow-sm mb-4">
+                <div class="card-body">
+                    <h4><i class="fas fa-map-marked-alt text-primary"></i> Lokasi</h4>
+                    <p class="text-muted mb-3"><i class="fas fa-map-marker-alt"></i> {{ kost.alamat }}</p>
+                    <div class="bg-light p-3 rounded text-center">
+                        <i class="fas fa-map fa-3x text-secondary"></i>
+                        <p class="mt-2 mb-0 text-muted">Peta lokasi akan ditampilkan di sini</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Sidebar Booking -->
+        <div class="col-lg-4">
+            <div class="card shadow-sm sticky-top" style="top: 80px;">
+                <div class="card-body">
+                    <div class="text-center mb-3">
+                        <h3 class="text-primary mb-0">Rp {{ kost.harga|floatformat:0 }}</h3>
+                        <p class="text-muted">per bulan</p>
+                    </div>
+                    
+                    <hr>
+                    
+                    <!-- Detail Info -->
+                    <div class="mb-3">
+                        <div class="d-flex justify-content-between mb-2">
+                            <span><i class="fas fa-door-open text-primary"></i> Kamar tersedia</span>
+                            <strong>{{ kost.jumlah_kamar }}</strong>
+                        </div>
+                        <div class="d-flex justify-content-between mb-2">
+                            <span><i class="fas fa-venus-mars text-primary"></i> Jenis</span>
+                            <strong>{{ kost.get_jenis_display }}</strong>
+                        </div>
+                        <div class="d-flex justify-content-between mb-2">
+                            <span><i class="fas fa-calendar text-primary"></i> Ditambahkan</span>
+                            <strong>{{ kost.created_at|date:"d M Y" }}</strong>
+                        </div>
+                    </div>
+                    
+                    <hr>
+                    
+                    <!-- Action Buttons -->
+                    {% if kost.tersedia %}
+                        {% if user.is_authenticated %}
+                        <a href="{% url 'booking' kost.pk %}" class="btn btn-primary btn-lg w-100 mb-2">
+                            <i class="fas fa-calendar-check"></i> Booking Sekarang
+                        </a>
+                        {% else %}
+                        <a href="{% url 'login' %}?next={% url 'booking' kost.pk %}" class="btn btn-warning btn-lg w-100 mb-2">
+                            <i class="fas fa-sign-in-alt"></i> Login untuk Booking
+                        </a>
+                        {% endif %}
+                    {% else %}
+                    <button class="btn btn-secondary btn-lg w-100 mb-2" disabled>
+                        <i class="fas fa-times-circle"></i> Sudah Penuh
+                    </button>
+                    {% endif %}
+                    
+                    <a href="https://wa.me/6281234567890?text=Halo, saya tertarik dengan {{ kost.nama }}" 
+                       class="btn btn-success btn-lg w-100 mb-2" target="_blank">
+                        <i class="fab fa-whatsapp"></i> Hubungi via WhatsApp
+                    </a>
+                    
+                    <a href="tel:081234567890" class="btn btn-outline-primary w-100">
+                        <i class="fas fa-phone"></i> Telepon Sekarang
+                    </a>
+                    
+                    <hr>
+                    
+                    <!-- Share -->
+                    <div class="text-center">
+                        <p class="text-muted mb-2">Bagikan:</p>
+                        <div class="d-flex justify-content-center gap-2">
+                            <a href="#" class="btn btn-sm btn-outline-primary rounded-circle" style="width: 40px; height: 40px;">
+                                <i class="fab fa-facebook-f"></i>
+                            </a>
+                            <a href="#" class="btn btn-sm btn-outline-info rounded-circle" style="width: 40px; height: 40px;">
+                                <i class="fab fa-twitter"></i>
+                            </a>
+                            <a href="#" class="btn btn-sm btn-outline-success rounded-circle" style="width: 40px; height: 40px;">
+                                <i class="fab fa-whatsapp"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Tips Section -->
+            <div class="card shadow-sm mt-4">
+                <div class="card-body">
+                    <h5><i class="fas fa-lightbulb text-warning"></i> Tips Memilih Kost</h5>
+                    <ul class="small text-muted">
+                        <li>Cek kondisi kamar langsung</li>
+                        <li>Tanyakan detail fasilitas</li>
+                        <li>Pastikan lokasi strategis</li>
+                        <li>Baca aturan kost dengan teliti</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Back Button -->
+    <div class="text-center mt-4">
+        <a href="{% url 'home' %}" class="btn btn-outline-secondary">
+            <i class="fas fa-arrow-left"></i> Kembali ke Daftar Kost
+        </a>
+    </div>
+</div>
+{% endblock %}
